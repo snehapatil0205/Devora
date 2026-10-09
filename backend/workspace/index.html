@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            color: #333;
+        }
+        h1 {
+            margin-top: 2rem;
+            font-size: 2.5rem;
+            color: #2c3e50;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 2rem 0;
+        }
+        .cell {
+            background: #fff;
+            border: 2px solid #2c3e50;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .cell:hover {
+            background: #e8f0fe;
+        }
+        .cell:active {
+            transform: scale(0.95);
+        }
+        .status {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        button {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #3d566e;
+        }
+        @media (max-width: 500px) {
+            .board {
+                grid-template-columns: repeat(3, 70px);
+                grid-template-rows: repeat(3, 70px);
+            }
+            .cell {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- React & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const winningLines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+
+        function calculateWinner(board) {
+            for (let line of winningLines) {
+                const [a, b, c] = line;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return board[a];
+                }
+            }
+            return null;
+        }
+
+        function Game() {
+            const [board, setBoard] = useState(Array(9).fill(null));
+            const [xIsNext, setXIsNext] = useState(true);
+            const [winner, setWinner] = useState(null);
+            const [isDraw, setIsDraw] = useState(false);
+
+            useEffect(() => {
+                const win = calculateWinner(board);
+                if (win) {
+                    setWinner(win);
+                } else if (board.every(cell => cell !== null)) {
+                    setIsDraw(true);
+                }
+            }, [board]);
+
+            const handleClick = (idx) => {
+                if (board[idx] || winner) return; // ignore if occupied or game over
+                const newBoard = board.slice();
+                newBoard[idx] = xIsNext ? 'X' : 'O';
+                setBoard(newBoard);
+                setXIsNext(!xIsNext);
+            };
+
+            const resetGame = () => {
+                setBoard(Array(9).fill(null));
+                setXIsNext(true);
+                setWinner(null);
+                setIsDraw(false);
+            };
+
+            const renderCell = (idx) => (
+                <div className="cell" onClick={() => handleClick(idx)} key={idx}>
+                    {board[idx]}
+                </div>
+            );
+
+            let status;
+            if (winner) {
+                status = `Winner: ${winner}`;
+            } else if (isDraw) {
+                status = "It's a draw!";
+            } else {
+                status = `Next player: ${xIsNext ? 'X' : 'O'}`;
+            }
+
+            return (
+                <div style={{ textAlign: 'center' }}>
+                    <div className="status">{status}</div>
+                    <div className="board">
+                        {board.map((_, idx) => renderCell(idx))}
+                    </div>
+                    <button onClick={resetGame}>Reset Game</button>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Game />);
+    </script>
+</body>
+</html>

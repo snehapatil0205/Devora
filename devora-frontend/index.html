@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0d12" />
+  <title>Devora — AI Software Engineering Agent</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">D<span>✦</span></div>
+        <div>
+          Devora
+          <small>AI SOFTWARE ENGINEER</small>
+        </div>
+      </div>
+
+      <button class="new-task" id="newTaskBtn" type="button">
+        <span>＋</span>
+        New chat
+        <kbd>⌘ K</kbd>
+      </button>
+
+      <div class="nav-label">WORKSPACE</div>
+
+      <a class="nav-item active" href="index.html">
+        <span class="nav-icon">◈</span>
+        <span>Agent chat</span>
+      </a>
+
+      <a class="nav-item" href="workspace.html">
+        <span class="nav-icon">▤</span>
+        <span>Code explorer</span>
+      </a>
+
+      <a class="nav-item" id="navPreviewLink" href="#" target="_blank">
+        <span class="nav-icon">↗</span>
+        <span>Open Preview Tab</span>
+      </a>
+
+      <div class="nav-label recent-label">RECENT CHATS</div>
+
+      <div class="recent-list" id="recentList">
+        <div class="recent-empty">Your recent chats will appear here.</div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="clear-ws-btn" id="clearWorkspaceBtn" type="button" title="Clear current workspace files">
+          🗑 Clear workspace
+        </button>
+
+        <div class="connection-card">
+          <span class="status-dot" id="connectionDot"></span>
+          <div>
+            <strong id="connectionTitle">Checking backend…</strong>
+            <small id="connectionText">Connecting to localhost:8001</small>
+          </div>
+          <button id="retryHealth" title="Retry connection" aria-label="Retry connection">
+            ↻
+          </button>
+        </div>
+
+        <div class="user-row">
+          <div class="avatar">D</div>
+          <div>
+            <strong>Developer</strong>
+            <small>Local workspace</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT INTERFACE -->
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle sidebar">☰</button>
+
+        <div class="breadcrumb">
+          Devora <span>/</span> <strong>Agent chat</strong>
+        </div>
+
+        <div class="top-actions">
+          <div class="model-pill">
+            <span class="model-dot"></span>
+            AI Agent (Groq / 120B)
+          </div>
+          <button class="icon-btn" id="helpBtn" title="Help" aria-label="Help">?</button>
+        </div>
+      </header>
+
+      <div class="content chat-container">
+
+        <!-- WELCOME HEADER (Shown when chat is empty) -->
+        <section class="welcome" id="welcomeHeader">
+          <div class="eyebrow">
+            <span class="sparkle">✦</span>
+            AUTONOMOUS AI SOFTWARE ENGINEER
+          </div>
+
+          <h1>Build anything.<br /><span>Rendered live in chat.</span></h1>
+
+          <p class="welcome-copy">
+            Tell Devora what to build (e.g. <em>"Create a Todo list app in React"</em> or <em>"Create an XO game in React"</em>).
+            Devora builds the code and displays the working interactive application right in the chat.
+          </p>
+        </section>
+
+        <!-- CHAT STREAM FEED -->
+        <div class="chat-feed" id="chatFeed">
+          <!-- Chat messages dynamically inserted here -->
+        </div>
+
+        <!-- FIXED CHAT COMPOSER -->
+        <section class="composer-wrap" id="composerWrap">
+          <div class="composer">
+            <textarea
+              id="taskInput"
+              placeholder="Tell Devora what to build (e.g., 'Create a todo list in react', 'Create an XO game')..."
+              rows="2"
+              aria-label="Describe your software engineering task"
+            ></textarea>
+
+            <div class="composer-bottom">
+              <div class="composer-hints">
+                <span class="hint-chip">Devora Agent</span>
+                <span class="hint-muted">Shows working application inside chat</span>
+              </div>
+
+              <button class="run-btn" id="runBtn" type="button">
+                <span class="run-label">Send</span>
+                <span class="run-arrow">↑</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="composer-foot">
+            <span><span class="tiny-lock">◆</span> Generated apps render live inside chat messages</span>
+            <span>Enter to send · Shift + Enter for new line</span>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div class="modal-backdrop hidden" id="helpModal">
+    <div class="modal">
+      <button class="modal-close" id="closeHelp" aria-label="Close help" type="button">×</button>
+      <div class="eyebrow">DEVORA GUIDE</div>
+      <h2>How to use Devora Chat</h2>
+      <p>
+        Type any application request in the chat composer. Devora will write the code and embed
+        the interactive application directly into the conversation stream.
+      </p>
+
+      <div class="help-row">
+        <span>Todo App</span>
+        <code>"Create a todo list in React"</code>
+      </div>
+      <div class="help-row">
+        <span>XO Game</span>
+        <code>"Create an XO game in React with AI"</code>
+      </div>
+      <div class="help-row">
+        <span>Direct Preview URL</span>
+        <code>http://localhost:8001/api/workspace/preview</code>
+      </div>
+      <div class="help-row">
+        <span>Code Explorer</span>
+        <code>workspace.html</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
