@@ -50,8 +50,6 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    app.add_middleware(
-    CORSMiddleware,
     allow_origins=[
         "https://devora-devora-frontend.vercel.app",
     ],
@@ -59,13 +57,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-    allow_origins=[
-        "https://devora-devora-frontend.vercel.app",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 
 
 # ============================================================
