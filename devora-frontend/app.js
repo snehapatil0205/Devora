@@ -1,5 +1,5 @@
 (() => {
-  let API = (window.DEVORA_API_BASE || "http://localhost:8001").replace(/\/$/, "");
+  let API = (window.DEVORA_API_BASE || "https://devora-fuwf.onrender.com").replace(/\/$/, "");
   const $ = (id) => document.getElementById(id);
 
   let toastTimer;
